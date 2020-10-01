@@ -53,24 +53,41 @@
 	
 		
 		<div id='contain' class='contain'>
+			<div id='menu'>
+				<ul>
+					<li 
+						v-for="item in menu" 
+						v-bind:class="{ active: item.value }"
+						@click="menu_click(item)">
+						<span class='icon'>{{item.icon}}</span> {{item.title}}
+					</li>
+				</ul>
+			</div>
 		
+			<transition name="scale">
 			<div class='info widther'  v-show="showInfo">
 				<div class='center'>
 					<h1>
 						Генератор таинственных завязок для приключений в <span class='title'>Tales from the Loop</span>
 					</h1>
+					<span class='lesser'>Они же «Тайны эфосферы», они же «Байки из петли» и прочая, и прочая...</span>
 				</div> 
 				
 				<p>
 					Тут можно получить идеи для создания приключения.
+				</p>
+				<p>
+					Завязки генерируются путем бросания кубиков и получением результата из таблиц. Чтобы узнать подробнее и увидеть информацию из таблиц, нажмите в меню "Данные таблиц".
 				</p>
 				
 				<p>
 					GitHub: <a href="https://github.com/Etignis/TftL_Hook_Generator">https://github.com/Etignis/TftL_Hook_Generator</a>
 				</p>
 			</div>
+			
+			</transition>
 
-			<div id='hook'  class='panel' >
+			<div class='hook' >
 				<div class='widther'>
 					<div class='center'>
 						<h1>С чего же все началось?</h1>
@@ -91,15 +108,59 @@
 				</div>
 			</div>
 		
+		
+			<div id='diceFieald' class='widther'>
+				<die 
+					v-for="die in dice"
+					:side="die.value"
+					:rolling="die.rolling">
+				<die/>
+				
+			</div>
+			
+			
+			<transition name="scale">
+			<div class='tables widther info'  v-show="showTables">
+				
+				<h1>
+					Таблицы
+				</h1>
+				
+				<p>
+					Берем 7d6 и бросаем. Смотрим, что выпало, группируем кубики по <strong>совпавшим цифрам</strong>. Потом сверяемся со списками ниже. В целом, группы из двух цифр несут небольшую угрозу группе детей (героев игры), группы из трех - более опасные вещи, могут повлиять также на родственников и соседей, а из четырех - несут опасность всему городу (или даже стране). <strong>Одиночные цифры</strong> добавляют некоторые детали. 
+				</p>
+				
+				<ul>
+					<li	v-for="table in tablesData">
+						<p>
+							{{table.dieNames}} - {{table.title}}
+						</p>
+						<ul>
+							<li	v-for="row in table.subs">
+								{{row.info}} → {{row.title}}
+								<ul>
+									<li	v-for="variant in row.list">
+										{{variant}}
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				
+			</div>
+			
+			</transition>
+			
 			
 			<footer>
-				<p class='padding'>
+				<p class='margin'>
 					Данные распространются по лицензии Creative Commons Attribution 4.0 Unported License.
 				</p>
-				<h1 class='padding'>
+				<h1  class='margin'>
 					Источникик и полезности: 
 				</h1>
-				<div class='creditials' class='padding'>				
+				<div class='creditials'>				
 					<div class='source'>
 						<a href="https://studio101.ru/lp/tales" class='outer_logo'>
 							<img src='https://studio101.ru/pictures/logo_20190616022604.png'>
@@ -126,9 +187,9 @@
 	
 	
 
-	<script type='text/javascript' src="js/lib_TFTL.js" defer></script>
+	<script type='text/javascript' src="js/lib_TFTL.js?v=0.11" defer></script>
 	<script type='text/javascript' src="js/vue.js" defer></script>
-  <script type='text/javascript' src='js/controller.js' defer></script>
+  <script type='text/javascript' src='js/controller.js?v=0.11' defer></script>
 	
 
 <!-- Yandex.Metrika counter -->

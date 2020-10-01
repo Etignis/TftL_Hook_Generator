@@ -45,6 +45,55 @@ function parseDie(sDie){
 }
 
 
+Vue.component('die', {
+	props: {		
+		side: {
+			type: Number,
+			default: 1
+		},
+		rolling: {
+			type: Boolean,
+			default: false
+		}
+		
+	},
+	data: function(){
+		return {
+			bouce_active: false
+		}
+	},
+	methods: {
+		
+	},
+	computed: {
+		_side: function(){
+			return `show-${this.side}`;
+		},
+		_bounce: function(){
+			return this.rolling?`bounce-${randd(1,5)}`:"";
+		},
+		_roll: function(){
+			return this.rolling?`roll-${randd(1,5)}`:"";
+		},
+		_stop: function(){
+			return this.rolling==false?`stop-${this.side}`:"";
+		}
+	},
+	created: function(){
+		
+	},
+	template: `<div :class="[{scene: true}, _bounce]">
+	<div class="cube" :class="[_roll, _stop]">
+		<div class="cube__face cube__face--1">⚀</div>
+		<div class="cube__face cube__face--2">⚁</div>
+		<div class="cube__face cube__face--3">⚂</div>
+		<div class="cube__face cube__face--4">⚃</div>
+		<div class="cube__face cube__face--5">⚄</div>
+		<div class="cube__face cube__face--6">⚅</div>
+	</div>
+</div>`
+});
+
 	
 var app = new Vue({
 	el: '#app',
@@ -64,9 +113,74 @@ var app = new Vue({
 			"Ещё вариант",
 			"Давай по новой"
 		],
+		
+		menu: [
+			{
+				title: "Информация об инструменте",
+				icon: "📁",
+				value: true
+			},
+			{
+				title: "Данные таблиц",
+				icon: "💾",
+				value: false
+			},
+			{
+				title: "Генератор имен",
+				icon: "🧑‍🤝‍🧑",
+				value: false,
+				type: 'link',
+				url: 'https://tentaculus.ru/names/index.html#list=tftl&sex=any',
+			}
+		],
+		
+		dice: [
+			{
+				value: 1,
+				animation: 1,
+				height: 1,
+				rolling: false
+			},
+			{
+				value: 1,
+				animation: 1,
+				height: 1,
+				rolling: false
+			},
+			{
+				value: 1,
+				animation: 1,
+				height: 1,
+				rolling: false
+			},
+			{
+				value: 1,
+				animation: 1,
+				height: 1,
+				rolling: false
+			},
+			{
+				value: 1,
+				animation: 1,
+				height: 1,
+				rolling: false
+			},
+			{
+				value: 1,
+				animation: 1,
+				height: 1,
+				rolling: false
+			},
+			{
+				value: 1,
+				animation: 1,
+				height: 1,
+				rolling: false
+			},
+		],
 				
 		showPreloader: true,
-		showInfo: true,
+		//showInfo: true,
 
 		oConfig: {},
 		bAppIsReady: false,
@@ -84,6 +198,43 @@ var app = new Vue({
 			} else {
 				return this.aButtontexts[0];
 			}
+		},
+		
+		showInfo: function(){
+			return this.menu.find(el=>el.icon=="📁").value;
+		},
+		
+		showTables: function(){
+			return this.menu.find(el=>el.icon=="💾").value;
+		},
+		
+		tablesData: function(){
+			let oDieDictIco = {
+				"1": "⚀ Единицы",
+				"2": "⚁ Двойки",
+				"3": "⚂ Тройки",
+				"4": "⚃ Четверки",
+				"5": "⚄ Пятерки",
+				"6": "⚅ Шестерки"
+			}
+			let oDieDict = {
+				"1": "eдиницы",
+				"2": "двойки",
+				"3": "тройки",
+				"4": "четверки",
+				"5": "пятерки",
+				"6": "шестерки"
+			}
+			let oData = lib_TFTL.data;
+			oData.forEach(el=>{
+				el.dieNames = oDieDictIco[el.die] || "Одиночные цифры";
+				
+				el.subs.forEach((item, i)=>{
+					item.info = `${item.die? "": i+2} ${oDieDict[item.die || el.die]}`;
+				});
+			});
+			
+			return oData;
 		}
 	},
 	mounted: function() {
@@ -94,6 +245,10 @@ var app = new Vue({
 		if(this.bDebug) {
 			alert('lib version: '+lib_TFTL.version)
 		}
+		
+		this.dice.forEach((el, i)=>{
+			el.value = randd(1,6)
+		});
 		// this.structure = lib_TFTL.getStructure();
 		// if(this.bDebug) {
 			// alert('structure length: '+this.structure.length)
@@ -137,9 +292,51 @@ var app = new Vue({
 	},
 	methods: {
 		_random: function(){
-			this.random_data = lib_TFTL.getHook();
-			
+			//this.random_data = lib_TFTL.getHook({showLog: true});
+			this.roll();
 		},
+		
+		menu_click: function(oItem){
+			let oMenuItem = this.menu.find(el=>el.icon==oItem.icon);
+			if(oMenuItem.type=='link') {
+				window.open(oMenuItem.url);
+			} else {
+				oMenuItem.value = !oMenuItem.value;
+			}
+		},
+		
+		_sleep: async function(nMs=1500){
+			return new Promise((resolve)=>{setTimeout(()=>{				
+				resolve()
+			}, nMs)});
+		},
+		_animate_roll: async function(aSet){
+			let aSorted = aSet.sort();
+			this.dice.forEach((el, i)=>{
+				el.rolling = true;
+				el.stop = false;
+			});
+			await this._sleep(1000);
+			this.dice.forEach((el, i)=>{
+				el.rolling = false;
+				el.stop = true;
+				el.value = Number(aSorted[i])
+			});
+			
+			await this._sleep(600);
+			
+			this.dice.forEach((el, i)=>{
+				el.rolling = false;
+			});
+		},
+		
+		roll: async function(){
+			let set = lib_TFTL.getRandomSet();
+			// dice animation
+			await this._animate_roll(set);
+			this.random_data = lib_TFTL.getHook({showLog: true, set: set});
+			
+		}
 		
 	}
 });

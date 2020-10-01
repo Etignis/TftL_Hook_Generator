@@ -17,9 +17,19 @@
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
+  
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
+}
+.scale-enter-active, .scale-leave-active {
+  //transition: opacity .5s;
+  transition: transform .5s;
+}
+.scale-enter, .scale-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  //opacity: 0;
+	transform: scale(0);
+	
 }
 
 
@@ -43,6 +53,10 @@
 .padding {
 	padding: @padding;
 }
+.margin {
+	margin: @padding;
+}
+
 
 
 @media screen and (min-width: @m_w_1) {

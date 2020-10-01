@@ -69,17 +69,18 @@ a{
 }
 
 button{
-	background: @color_dark;
-	color: white;
+	background: @accent;
+	color: @black;
 	font-weight: bold;
 	font-size: 2rem;
+	//text-shadow: 0 1px @black;
 	border: 0;
 	padding: @padding;
 	transition: background .2s;
-cursor :pointer;
+	cursor :pointer;
 
 	&:hover{
-		background: @color;
+		background: darken(@accent, 5%);
 	}
 }
 

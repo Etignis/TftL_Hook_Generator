@@ -108,8 +108,8 @@ a:hover {
   color: #ffffff;
 }
 button {
-  background: #4da8d9;
-  color: white;
+  background: #ffc107;
+  color: #000;
   font-weight: bold;
   font-size: 2rem;
   border: 0;
@@ -118,7 +118,7 @@ button {
   cursor: pointer;
 }
 button:hover {
-  background: #a1d1eb;
+  background: #ecb100;
 }
 @media screen and (min-width: 65em) {
   html {
@@ -131,7 +131,7 @@ button:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #4a4a4a;
+  background: #a1d1eb;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -245,6 +245,14 @@ button:hover {
 .fade-leave-to {
   opacity: 0;
 }
+.scale-enter-active,
+.scale-leave-active {
+  transition: transform .5s;
+}
+.scale-enter,
+.scale-leave-to {
+  transform: scale(0);
+}
 #app {
   display: flex;
   flex-direction: column;
@@ -260,10 +268,49 @@ button:hover {
 .padding {
   padding: 1rem;
 }
+.margin {
+  margin: 1rem;
+}
 @media screen and (min-width: 65em) {
   #app {
     flex-direction: row;
   }
+}
+#menu {
+  width: 100%;
+  background: #a1d1eb;
+  color: #fff;
+  display: flex;
+  justify-content: space-around;
+}
+#menu ul {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 80rem;
+}
+#menu li {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: block;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: background 0.2s, box-shadow 0.2s, color 0.1s;
+}
+#menu li:hover {
+  color: #4da8d9;
+  box-shadow: 0 5px #4da8d9;
+}
+#menu li:active,
+#menu li.active {
+  color: #4da8d9;
+  background: #cbe6f4;
 }
 .widther {
   max-width: 80rem;
@@ -310,11 +357,30 @@ button:hover {
   background: rgba(161, 209, 235, 0.5);
   position: relative;
   box-shadow: 0 0 20vw 10px rgba(190, 201, 206, 0.9);
+  transition: all 0.2s;
 }
 #contain footer {
   margin-top: 4rem;
-  border-top: 1px solid gray;
   background: rgba(161, 209, 235, 0.4);
+}
+.hook {
+  width: 100%;
+  background: rgba(77, 168, 217, 0.5);
+  transition: all 0.2s;
+}
+.hook::before,
+.hook::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1rem;
+  background: repeating-linear-gradient(45deg, #000, #000 10px, #ffc107 10px, #ffc107 20px);
+}
+.hook::before {
+  margin-bottom: 1rem;
+}
+.hook::after {
+  margin-top: 1rem;
 }
 .info {
   border: 2px solid #a1d1eb;
@@ -324,57 +390,8 @@ button:hover {
   color: white;
   margin: 1rem auto;
 }
-.panel {
-  width: 100%;
-  background: rgba(77, 168, 217, 0.5);
-  padding: 1rem 0;
-}
 .center {
   text-align: center;
-}
-ul.compact {
-  display: flex;
-  flex-wrap: wrap;
-}
-ul.compact li {
-  flex-basis: 200px;
-  flex-grow: 1;
-  flex-shrink: 1;
-}
-.lister {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  position: relative;
-}
-.lister::before {
-  content: "⚬";
-  position: absolute;
-  left: -1.5rem;
-  top: -0.2rem;
-}
-.lister div:first-child {
-  margin-right: 2rem;
-}
-.checkboxer {
-  position: relative;
-  cursor: pointer;
-  transition: color .3s;
-}
-.checkboxer:hover {
-  color: white;
-}
-.checkboxer::before {
-  content: "";
-  display: inline-block;
-  border-radius: 3px;
-  border: 2px solid currentColor;
-  width: 1rem;
-  height: 1rem;
-  margin-right: 0.5rem;
-}
-.checkboxer.selected::before {
-  background: #a1d1eb;
 }
 .creditials {
   display: flex;
@@ -383,6 +400,7 @@ ul.compact li {
 .creditials .source {
   border: 0.5rem solid #a1d1eb;
   padding: 0.5rem;
+  margin: 0.5rem;
   background: white;
   flex-grow: 1;
   flex-basis: 150px;
@@ -413,4 +431,287 @@ ul.compact li {
   color: #4da8d9;
 }
 @media screen and (min-width: 65em) {
+}
+#diceFieald {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem auto;
+}
+#diceFieald .scene {
+  width: 6rem;
+  height: 6rem;
+  perspective: 600px;
+  position: relative;
+  box-shadow: 0 5px 13px rgba(0, 0, 0, 0.4);
+}
+#diceFieald .cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+#diceFieald .cube__face {
+  position: absolute;
+  width: 6rem;
+  height: 6rem;
+  font-size: 6rem;
+  color: #fff;
+  background: #ffc107;
+  box-shadow: inset 0 0 2rem 0 #d39e00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+#diceFieald .cube__face--1 {
+  /*background: rgba(200,100,200, .5);*/
+  transform: rotateY(0deg) translateZ(3rem);
+}
+#diceFieald .cube__face--2 {
+  /*background: rgba(100,100,200, .5);*/
+  transform: rotateY(90deg) translateZ(3rem);
+}
+#diceFieald .cube__face--3 {
+  /*background: rgba(200,100,100, .5);*/
+  transform: rotateY(180deg) translateZ(3rem);
+}
+#diceFieald .cube__face--4 {
+  /*background: rgba(50,100,200, .5);*/
+  transform: rotateY(-90deg) translateZ(3rem);
+}
+#diceFieald .cube__face--5 {
+  /*background: rgba(200,50,200, .5);*/
+  transform: rotateX(90deg) translateZ(3rem);
+}
+#diceFieald .cube__face--6 {
+  /*background: rgba(200,100,50, .5);*/
+  transform: rotateX(-90deg) translateZ(3rem);
+}
+#diceFieald .cube.show-1 {
+  transform: translateZ(-3rem) rotateY(0deg);
+}
+#diceFieald .cube.show-2 {
+  transform: translateZ(-3rem) rotateY(-90deg);
+}
+#diceFieald .cube.show-3 {
+  transform: translateZ(-3rem) rotateY(-180deg);
+}
+#diceFieald .cube.show-4 {
+  transform: translateZ(-3rem) rotateY(90deg);
+}
+#diceFieald .cube.show-5 {
+  transform: translateZ(-3rem) rotateX(-90deg);
+}
+#diceFieald .cube.show-6 {
+  transform: translateZ(-3rem) rotateX(90deg);
+}
+#diceFieald .cube.roll-1 {
+  animation-duration: 1s;
+  animation-name: roll-1;
+}
+#diceFieald .cube.roll-2 {
+  animation-duration: 1.1s;
+  animation-name: roll-2;
+}
+#diceFieald .cube.roll-3 {
+  animation-duration: 0.9s;
+  animation-name: roll-3;
+}
+#diceFieald .cube.roll-4 {
+  animation-duration: 0.8s;
+  animation-name: roll-4;
+}
+#diceFieald .cube.roll-5 {
+  animation-duration: 1.2s;
+  animation-name: roll-5;
+}
+#diceFieald .cube.stop-1 {
+  animation-duration: 0.4s;
+  animation-name: stop-1;
+  animation-fill-mode: forwards;
+}
+#diceFieald .cube.stop-2 {
+  animation-duration: 0.3s;
+  animation-name: stop-2;
+  animation-fill-mode: forwards;
+}
+#diceFieald .cube.stop-3 {
+  animation-duration: 0.5s;
+  animation-name: stop-3;
+  animation-fill-mode: forwards;
+}
+#diceFieald .cube.stop-4 {
+  animation-duration: 0.45s;
+  animation-name: stop-4;
+  animation-fill-mode: forwards;
+}
+#diceFieald .cube.stop-5 {
+  animation-duration: 0.35s;
+  animation-name: stop-5;
+  animation-fill-mode: forwards;
+}
+#diceFieald .cube.stop-6 {
+  animation-duration: 0.4s;
+  animation-name: stop-6;
+  animation-fill-mode: forwards;
+}
+#diceFieald .bounce-1 {
+  align-self: flex-end;
+  animation-name: bounce-7;
+  animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+  animation-duration: 2s;
+}
+#diceFieald .bounce-2 {
+  align-self: flex-end;
+  animation-duration: 2s;
+  animation-name: bounce-7;
+  animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+  animation-duration: 1.5s;
+}
+#diceFieald .bounce-3 {
+  align-self: flex-end;
+  animation-duration: 2s;
+  animation-name: bounce-7;
+  animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+  animation-duration: 2.3s;
+}
+#diceFieald .bounce-4 {
+  align-self: flex-end;
+  animation-duration: 2s;
+  animation-name: bounce-7;
+  animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+  animation-duration: 2.7s;
+}
+#diceFieald .bounce-5 {
+  align-self: flex-end;
+  animation-duration: 2s;
+  animation-name: bounce-7;
+  animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+  animation-duration: 1.8s;
+}
+@keyframes bounce-7 {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    transform: scale(1.1, 0.9) translateY(0);
+  }
+  30% {
+    transform: scale(0.9, 1.1) translateY(-100px);
+  }
+  50% {
+    transform: scale(1.05, 0.95) translateY(0);
+  }
+  57% {
+    transform: scale(1, 1) translateY(-7px);
+  }
+  64% {
+    transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
+}
+@keyframes roll-1 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  60% {
+    transform: translateZ(-3rem) rotateY(360deg);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateX(180deg);
+  }
+}
+@keyframes roll-2 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  60% {
+    transform: translateZ(-3rem) rotateY(-360deg);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateX(270deg);
+  }
+}
+@keyframes roll-3 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  60% {
+    transform: translateZ(-3rem) rotateY(-270deg);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateX(360deg);
+  }
+}
+@keyframes roll-4 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  60% {
+    transform: translateZ(-3rem) rotateY(540deg);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateX(-360deg);
+  }
+}
+@keyframes roll-5 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  60% {
+    transform: translateZ(-3rem) rotateY(180deg);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateX(360deg);
+  }
+}
+@keyframes stop-1 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateY(0deg);
+  }
+}
+@keyframes stop-2 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateY(-90deg);
+  }
+}
+@keyframes stop-3 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateY(-180deg);
+  }
+}
+@keyframes stop-4 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateY(90deg);
+  }
+}
+@keyframes stop-5 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateX(-90deg);
+  }
+}
+@keyframes stop-6 {
+  0% {
+    transform: translateZ(-3rem);
+  }
+  100% {
+    transform: translateZ(-3rem) rotateX(90deg);
+  }
 }
