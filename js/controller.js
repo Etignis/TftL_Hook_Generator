@@ -105,6 +105,12 @@ var app = new Vue({
 			extra: []
 		},
 
+		aQuestionText: [
+			"С чего же всё началось?",
+			"С чего же началось на этот раз?",
+			"Как всё начиналось?",
+			"А что на этот раз?"
+		],
 		aButtontexts: [
 			"Узнать",
 			"Всё было совсем не так",
@@ -197,6 +203,14 @@ var app = new Vue({
 				return this.aButtontexts[randd(0, nMax)];
 			} else {
 				return this.aButtontexts[0];
+			}
+		},
+		sQuestionText: function(){
+			if(this.random_data.main.length || this.random_data.extra.length ) {
+				let nMax = this.aQuestionText.length-1;
+				return this.aQuestionText[randd(0, nMax)];
+			} else {
+				return this.aQuestionText[0];
 			}
 		},
 		
