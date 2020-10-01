@@ -263,6 +263,8 @@ var app = new Vue({
 		this.dice.forEach((el, i)=>{
 			el.value = randd(1,6)
 		});
+		
+		this.loadConfigData();
 		// this.structure = lib_TFTL.getStructure();
 		// if(this.bDebug) {
 			// alert('structure length: '+this.structure.length)
@@ -317,6 +319,8 @@ var app = new Vue({
 			} else {
 				oMenuItem.value = !oMenuItem.value;
 			}
+			
+			this.setConfig('menu', this.menu.map(el=>el.value));
 		},
 		
 		_sleep: async function(nMs=1500){
@@ -350,7 +354,32 @@ var app = new Vue({
 			await this._animate_roll(set);
 			this.random_data = lib_TFTL.getHook({showLog: true, set: set});
 			
-		}
+		},
+		
+		
+		setConfig: function (prop, val) {
+			if(prop && val != undefined && this.oConfig) {
+				this.oConfig[prop] = val;
+				localStorage.setItem("tftl_config", JSON.stringify(this.oConfig));
+			}
+		},
+		getConfig: function (prop) {
+			this.oConfig = JSON.parse(localStorage.getItem("tftl_config")) || {};
+			if(prop!=undefined) {
+				return localStorage.getItem("tftl_config")? this.oConfig[prop] : null;
+			}
+			return ""; 
+		},
+		
+		loadConfigData: function(){
+			let aMenuSelected = this.getConfig("menu");
+			if(aMenuSelected){
+				this.menu.forEach((el, i)=>{
+					el.value = aMenuSelected[i];
+				}) 				
+			}		
+			
+		},
 		
 	}
 });

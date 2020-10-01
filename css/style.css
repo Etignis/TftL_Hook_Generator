@@ -366,6 +366,7 @@ button:hover {
 .hook {
   width: 100%;
   background: rgba(77, 168, 217, 0.5);
+  margin: 0.5rem auto;
   transition: all 0.2s;
 }
 .hook::before,
