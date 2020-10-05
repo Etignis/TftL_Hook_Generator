@@ -286,10 +286,9 @@ button:hover {
 #menu ul {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
   padding: 0;
   margin: 0;
-  width: 100%;
-  max-width: 80rem;
 }
 #menu li {
   -webkit-touch-callout: none;
@@ -305,7 +304,7 @@ button:hover {
 }
 #menu li:hover {
   color: #4da8d9;
-  box-shadow: 0 5px #4da8d9;
+  box-shadow: 0 5px #ffc107;
 }
 #menu li:active,
 #menu li.active {

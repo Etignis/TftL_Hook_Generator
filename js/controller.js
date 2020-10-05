@@ -122,12 +122,19 @@ var app = new Vue({
 		
 		menu: [
 			{
-				title: "Информация об инструменте",
+				title: "На главную",
+				icon: "🐙",
+				value: false,
+				type: 'link',
+				url: 'https://tentaculus.ru/',
+			},
+			{
+				title: "Об инструменте",
 				icon: "📁",
 				value: true
 			},
 			{
-				title: "Данные таблиц",
+				title: "Правила",
 				icon: "💾",
 				value: false
 			},
@@ -137,6 +144,13 @@ var app = new Vue({
 				value: false,
 				type: 'link',
 				url: 'https://tentaculus.ru/names/index.html#list=tftl&sex=any',
+			},
+			{
+				title: "Отзывы/предложения",
+				icon: "📧",
+				value: false,
+				type: 'link',
+				url: 'https://tentaculus.ru/message/?theme=tftl_hooks',
 			}
 		],
 		
@@ -313,6 +327,7 @@ var app = new Vue({
 		},
 		
 		menu_click: function(oItem){
+			this.menu.filter(el=>el.type=='link').forEach(el=>{el.value= false});
 			let oMenuItem = this.menu.find(el=>el.icon==oItem.icon);
 			if(oMenuItem.type=='link') {
 				window.open(oMenuItem.url);
